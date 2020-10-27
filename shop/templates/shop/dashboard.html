@@ -1,0 +1,300 @@
+{% extends 'shop/basic2.html' %}
+{% load static %}
+
+
+
+{% block title %}<title>Articom Dashboard</title>{% endblock %}
+
+
+{% block navlist %}
+<li class="nav-item"><a href="{% url 'ShopHome' %}" class="nav-link js-scroll-trigger navcol">Shop</a></li>
+{% if user.is_authenticated%}
+<li class="nav-item"><a class="nav-link js-scroll-trigger navcol" style="color: #fed136; font-weight: bolder;">Welcome
+        {{request.user}}</a>
+</li>
+{% endif %}
+<a href="{% url 'Cart' %}" class="nav-link js-scroll-trigger navcol cartcol"
+    style="margin-left: 5px; margin-right: -326px; margin-top: -8px; width: 20%;"><i class="fab fa-opencart nav-item"
+        style="width: 149%; height: 58px; margin-top: -40%; margin-bottom: -32%; margin-right: -105.5%;"></i>
+    </li><span id="cart">0</span></a>
+{% endblock %}
+
+
+{% block masthead %}
+
+<style>
+    header.dashboardpic {
+        padding-top: 10.5rem;
+        padding-bottom: 6rem;
+        text-align: center;
+        color: #fff;
+        background-image: url("{% static 'shop/pics/h46.jpg' %}");
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .col-md-3 {
+        display: inline-block;
+        margin-left: -4px;
+    }
+
+    .carousel-indicators .active {
+        background-color: blue;
+    }
+
+    .col-md-3 img {
+
+        max-width: 250px;
+        height: 300px;
+    }
+
+    body .carousel-indicator li {
+        background-color: blue;
+    }
+
+    body .carousel-indicators {
+        bottom: 0;
+    }
+
+    body .carousel-control-prev-icon,
+    body .carousel-control-next-icon {
+        background-color: #fed136;
+        width: 23%;
+        height: 59px;
+        border-radius: 16px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        top: auto;
+        bottom: auto;
+        padding-top: 222px;
+    }
+
+    body .no-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 6.5%;
+        right: 0;
+        height: 65.5%;
+        width: 87%;
+        opacity: 0;
+        transition: .3s ease;
+        border-radius: 10%;
+        background: #212529;
+    }
+
+    .imghover:hover .overlay {
+        opacity: 0.9;
+    }
+
+    .overlaybutton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .btn-home {
+        color: #fed136;
+        background-color: #212529;
+        border-color: #fed136;
+    }
+
+    .btn-home:hover {
+        color: #fed136;
+        background-color: #26282b;
+        border-color: #fec503;
+    }
+
+    .btn-home:focus,
+    .btn-home.focus {
+        color: #fed136;
+        background-color: black;
+        border-color: #fec503;
+        box-shadow: 0 0 0 0.2rem rgba(254, 216, 84, 0.5);
+    }
+
+    #font {
+        font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+</style>
+
+
+
+<!-- {% for message in messages %}
+<div class="alert alert-{{ message.tags }}" style="margin-top: 86px;" role="alert">
+    <h4 class="alert-heading">{{ message.tags }}</h4>
+    <p>{{ message }}</p>
+    <hr>
+</div>
+{% endfor %} -->
+
+{% if user.is_authenticated%}
+<header class="masthead dashboardpic">
+    <div>
+        <div class="masthead-heading text-uppercase"
+            style="color: gold; text-shadow: 2px 2px 18px black; line-height: inherit; font-size: 500%;">
+            My Dashboard</div>
+        <div class="masthead-heading text-uppercase" style="color:#212529;"></div>
+        <p id="userlogged" style="display: none;">{{request.user}}</p>
+    </div>
+</header>
+{% endif %}
+
+<section class="page-section" id="services">
+    <div class="container">
+        <!--Slideshow starts here -->
+        <!-- <div class="text-center"> -->
+        <a href="{% url 'Logout' %}"><button class="btn btn-home btn-xl text-uppercase js-scroll-trigger"
+                style=" margin-top: -11%; margin-left: 93%;">Logout</button></a>
+        <h2 class="section-heading text-uppercase" style="text-align: center !important;">My Products</h2>
+        <h3 class="section-subheading text-muted" style="text-align: center !important;">We are the best merchandise of
+            Paintings in the town!</h3>
+
+        {% for product, range, nslides in allprods %}
+        <!--Slideshow starts here -->
+        <!-- <h1 style="margin-top: 6rem !important;">{{product.0.owner}}</h1> -->
+        <div class="row" id="prodhide">
+            <div id="demo{{forloop.counter}}" class="col carousel slide my-3" data-ride="carousel">
+                <ul class="carousel-indicators">
+                    <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+
+                    {% for i in range %}
+                    <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}"></li>
+                    {% endfor %}
+                </ul>
+
+
+                <div class="container carousel-inner no-padding" style="width: 64%;">
+
+                    <div class="carousel-item active" style="margin-right: -300%; width: 220%;">
+
+                        {% for i in product %}
+                        <div class="col-xs-3 col-sm-3 col-md-3 imghover" style="width: 150%;">
+                            <div class="card align-items-center" id="font"
+                                style="width: 18rem; border: none; text-align: center;">
+
+                                <img src="{{i.image.url}}" style="border-radius: 27px; height: 282px;"
+                                    class="card-img-top" alt="...">
+                                <div class="overlay">
+                                    <a href="/shop/productview/{{i.id}}"><button class="btn btn-primary overlaybutton">View Product</button></a>
+                                    <button id="delbtn" class="btn btn-danger" onclick="sure()">DELETE</button>
+                                    <!-- <p id="sure">Are You Sure</p>
+                                    <button id="delyes" class="btn btn-success" onclick="yesdel()">Yes</button>
+                                    <button id="delne" class="btn btn-danger" onclick="nodel()">No</button> -->
+
+                                </div>
+                                <div class="card-body">
+                                    <p id="product_owner" style="display: none;">{{i.owner}}</p>
+                                    <p class="card-title"><b>Category:</b> {{i.category}}</p>
+                                    <p class="card-title"><b>Name:</b> {{i.product_name}}</p>
+                                    <p class="card-text"><b>Price:</b><span style="color: green;"> $ {{i.price}}</span></p>
+                                    <!-- {{i.desc|slice:"0:100"}}... -->
+                                    <!-- <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}" class="btn btn-primary cart">Quick View</button></a> -->
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:2 and forloop.counter > 0 and not forloop.last %}
+                    </div>
+                    <div class="carousel-item">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- left and right controls for the slide -->
+            <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
+                <span class="carousel-control-prev-icon" style="margin-right: -100%; margin-top: -40%;"
+                    aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
+                <span class="carousel-control-next-icon" style="margin-right: 74.7%; margin-top: -40%;"
+                    aria-hidden="true"></span>
+            </a>
+        </div>
+        {% endfor %}
+        <!-- </div> -->
+        <a href="{% url 'AddForm' %}"><button class="btn btn-home btn-xl text-uppercase js-scroll-trigger"
+                style=" margin-top: 4%; margin-left: 38%;">Create a Product</button></a>
+
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    console.log('working');
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    }
+    else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    }
+    $('.cart').click(function () {
+        console.log('clicked');
+        var idstr = this.id.toString();
+        console.log(idstr);
+        if (cart[idstr] != undefined) {
+            cart[idstr] = 1;
+        }
+        else {
+            cart[idstr] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    });
+
+    var userlogged = document.getElementById("userlogged").value;
+    var product_owner = document.getElementById("product_owner").value;
+
+
+    if (product_owner != userlogged) {
+        document.getElementById("prodhide").style.display = "none";
+    }
+
+    // <button id="delbtn" class="btn btn-danger" onclick="sure()">DELETE</button>
+    //                                 <p id="sure">Are You Sure</p>
+    //                                 <button id="delyes" class="btn btn-success" onclick="yesdel()">Yes</button>
+    //                                 <button id="delne" class="btn btn-danger" onclick="nodel()">No</button>
+
+    // function sure() {
+    //     document.getElementById('delbtn').hidden = true;
+    //     document.getElementById('sure').hidden = false;
+    //     document.getElementById('delyes').hidden = false;
+    //     document.getElementById('delno').hidden = false;
+
+    // }
+
+    // function yesdel() {
+
+        
+
+
+    // }
+
+    // function nodel() {
+
+
+    // }
+
+
+</script>
+
+{% endblock %}
